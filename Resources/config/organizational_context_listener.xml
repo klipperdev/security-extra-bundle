@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="klipper_security_extra.organizational.subscriber" class="Klipper\Component\SecurityExtra\Listener\OrganizationalSubscriber">
+            <tag name="kernel.event_subscriber" />
+            <argument type="service" id="klipper_security_extra.organizational_context.helper" />
+        </service>
+
+        <service id="klipper_security_extra.kernel.organizational.subscriber.organizational_optional_filter" class="Klipper\Component\SecurityExtra\Listener\OrganizationalOptionalFilterSubscriber">
+            <tag name="kernel.event_subscriber" />
+            <argument type="service" id="klipper_security.organizational_context" />
+            <argument>_organizational_optional_filter_type</argument>
+        </service>
+    </services>
+</container>

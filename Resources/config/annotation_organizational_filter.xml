@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <!-- Annotation Organizational Filter Excluded Classes Loader -->
+        <service id="klipper_security_extra.organizational_filter.excluded_classes_loader.annotation"
+                 class="Klipper\Component\SecurityExtra\Organizational\Loader\ExcludedClassesAnnotationLoader"
+                 public="false">
+            <tag name="klipper_security_extra.organizational_filter.excluded_classes_loader" priority="-10" />
+            <argument type="service" id="annotations.reader"/>
+        </service>
+
+        <!-- Annotation Organizational Filter User Excluded Orgs Classes Loader -->
+        <service id="klipper_security_extra.organizational_filter.user_excluded_orgs_classes_loader.annotation"
+                 class="Klipper\Component\SecurityExtra\Organizational\Loader\UserExcludedOrgsClassesAnnotationLoader"
+                 public="false">
+            <tag name="klipper_security_extra.organizational_filter.user_excluded_orgs_classes_loader" priority="-10" />
+            <argument type="service" id="annotations.reader"/>
+        </service>
+
+        <!-- Annotation Organizational Filter Optional All Filter Classes Loader -->
+        <service id="klipper_security_extra.organizational_filter.optional_all_filter_classes_loader.annotation"
+                 class="Klipper\Component\SecurityExtra\Organizational\Loader\OptionalAllFilterClassesAnnotationLoader"
+                 public="false">
+            <tag name="klipper_security_extra.organizational_filter.optional_all_filter_classes_loader" priority="-10" />
+            <argument type="service" id="annotations.reader"/>
+        </service>
+    </services>
+
+</container>

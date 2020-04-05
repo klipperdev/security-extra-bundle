@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="klipper_security_extra.validator.permission"
+                 class="Klipper\Component\SecurityExtra\Validator\Constraints\PermissionValidator">
+            <tag name="validator.constraint_validator" />
+            <argument type="service" id="security.authorization_checker"/>
+            <argument type="service" id="security.token_storage"/>
+        </service>
+
+        <service id="klipper_security_extra.validator.sharing"
+                 class="Klipper\Component\SecurityExtra\Validator\Constraints\SharingValidator">
+            <tag name="validator.constraint_validator" />
+            <argument type="service" id="security.authorization_checker"/>
+            <argument type="service" id="security.token_storage"/>
+            <argument type="service" id="doctrine"/>
+            <argument type="service" id="klipper_security.organizational_context"/>
+        </service>
+
+        <service id="klipper_security_extra.validator.reserved_name"
+                 class="Klipper\Component\SecurityExtra\Validator\Constraints\IsReservedNameValidator">
+            <tag name="validator.constraint_validator" alias="klipper_security_extra.validator.reserved_name" />
+            <argument type="collection" />
+        </service>
+    </services>
+</container>

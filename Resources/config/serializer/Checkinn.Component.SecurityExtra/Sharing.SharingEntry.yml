@@ -1,0 +1,23 @@
+Klipper\Component\SecurityExtra\Sharing\SharingEntry:
+    exclusion_policy: ALL
+    properties:
+        id:
+            groups: [Default]
+        label:
+            groups: [Default]
+        type:
+            groups: [Default]
+        enabled:
+            groups: [Default]
+        active:
+            groups: [Default]
+        permissions:
+            groups: [Default]
+        startedAt:
+            groups: [Default]
+        endedAt:
+            groups: [Default]
+    virtual_properties:
+        getRoleNames:
+            groups: [Default]
+            serialized_name: roles

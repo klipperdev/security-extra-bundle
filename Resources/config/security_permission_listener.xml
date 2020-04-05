@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="klipper_security_extra.subscriber.permission" class="Klipper\Component\SecurityExtra\Listener\PermissionSubscriber">
+            <tag name="kernel.event_subscriber" />
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="security.token_storage"/>
+        </service>
+
+        <service id="klipper_security_extra.subscriber.permission_doctrine_filter" class="Klipper\Component\SecurityExtra\Listener\PermissionDoctrineFilterSubscriber">
+            <tag name="kernel.event_subscriber" />
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument/>
+        </service>
+    </services>
+</container>

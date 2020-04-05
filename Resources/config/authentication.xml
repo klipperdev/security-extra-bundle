@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="klipper_security_extra.authentication_helper" class="Klipper\Component\SecurityExtra\Authentication\AuthenticationHelper" public="true">
+            <argument type="service" id="security.authentication.trust_resolver" />
+            <argument type="service" id="security.token_storage" />
+        </service>
+
+        <service id="Klipper\Component\SecurityExtra\Authentication\AuthenticationHelper" alias="klipper_security_extra.authentication_helper" />
+
+    </services>
+</container>

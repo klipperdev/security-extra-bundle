@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="klipper_security_extra.serializer.subscribing_handler.sharing_entry"
+                 class="Klipper\Component\SecurityExtra\Serializer\Handler\PermissionCollectionHandler">
+            <tag name="jms_serializer.subscribing_handler" />
+            <argument type="service" id="klipper_metadata.permission_metadata_manager"/>
+        </service>
+
+    </services>
+</container>

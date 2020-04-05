@@ -1,0 +1,103 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <!-- Sharing Entry Manager -->
+        <service id="klipper_security_extra.sharing_entry_manager"
+                 class="Klipper\Component\SecurityExtra\Sharing\SharingEntryManager" public="true">
+            <argument type="service" id="klipper_resource.domain_manager"/>
+            <argument type="service" id="klipper_security_extra.sharing_entry_factory"/>
+            <argument type="collection"/>
+            <argument type="service" id="property_accessor"/>
+        </service>
+
+        <service id="Klipper\Component\SecurityExtra\Sharing\SharingEntryManager" alias="klipper_security_extra.sharing_entry_manager" />
+        <service id="Klipper\Component\SecurityExtra\Sharing\SharingEntryManagerInterface" alias="klipper_security_extra.sharing_entry_manager" />
+
+        <!-- Sharing Entry Factory -->
+        <service id="klipper_security_extra.sharing_entry_factory"
+                 class="Klipper\Component\SecurityExtra\Sharing\SharingEntryFactory"
+                 public="false">
+            <argument type="service" id="klipper_security_extra.sharing_entry_loader" />
+            <argument type="service" id="klipper_security_extra.sharing_entry.array_resource" />
+        </service>
+
+        <service id="klipper_security_extra.sharing_entry.array_resource"
+                 class="Klipper\Component\Config\ArrayResource"
+                 public="false">
+            <argument type="collection" />
+            <call method="add">
+                <argument>.</argument>
+                <argument>config</argument>
+            </call>
+        </service>
+
+        <service id="Klipper\Component\SecurityExtra\Sharing\SharingEntryFactory" alias="klipper_security_extra.sharing_entry_factory" />
+        <service id="Klipper\Component\SecurityExtra\Sharing\SharingEntryFactoryInterface" alias="klipper_security_extra.sharing_entry_factory" />
+
+        <!-- Sharing Entry Factory Cache -->
+        <service id="klipper_security_extra.sharing_entry_factory.cache"
+                 class="Klipper\Component\SecurityExtra\Sharing\CacheSharingEntryFactory"
+                 decorates="klipper_security_extra.sharing_entry_factory"
+                 public="false">
+            <argument type="service" id="klipper_security_extra.sharing_entry_factory.cache.inner" />
+            <argument type="collection">
+                <argument key="cache_dir">%kernel.cache_dir%/klipper_security</argument>
+            </argument>
+            <call method="setConfigCacheFactory">
+                <argument type="service" id="config_cache_factory" />
+            </call>
+        </service>
+
+        <service id="klipper_security_extra.sharing_entry_factory.warmer"
+                 class="Klipper\Component\SecurityExtra\Sharing\SharingEntryFactoryCacheWarmer"
+                 public="false">
+            <tag name="container.service_subscriber" />
+            <tag name="kernel.cache_warmer" />
+            <argument type="service" id="Psr\Container\ContainerInterface" />
+        </service>
+
+        <!-- Sharing Entry Loader -->
+        <service id="klipper_security_extra.sharing_entry_resolver"
+                 class="Symfony\Component\Config\Loader\LoaderResolver"
+                 public="false">
+            <argument type="collection" />
+        </service>
+
+        <service id="klipper_security_extra.sharing_entry_loader"
+                 class="Symfony\Component\Config\Loader\DelegatingLoader"
+                 public="false">
+            <argument type="service" id="klipper_security_extra.sharing_entry_resolver" />
+        </service>
+
+        <service id="klipper_security_extra.sharing_entry_loader.array_resource"
+                 class="Klipper\Component\SecurityExtra\Sharing\Loader\ArrayResourceLoader"
+                 public="false">
+            <tag name="klipper_security_extra.sharing_entry_loader" priority="200" />
+        </service>
+
+        <service id="klipper_security_extra.sharing_entry_loader.configuration"
+                 class="Klipper\Component\SecurityExtra\Sharing\Loader\ConfigurationLoader"
+                 public="false">
+            <tag name="klipper_security_extra.sharing_entry_loader" priority="100" />
+            <argument type="collection"/>
+        </service>
+
+        <!-- Sharing Entry Label Builder -->
+        <service id="klipper_security_extra.sharing_entry_label_builder.labelable"
+                 class="Klipper\Component\SecurityExtra\Sharing\LabelBuilder\LabelableLabelBuilder"
+                 public="false">
+            <tag name="klipper_security_extra.sharing_entry_label_builder" priority="-1000" />
+        </service>
+
+        <service id="klipper_security_extra.sharing_entry_label_builder.username"
+                 class="Klipper\Component\SecurityExtra\Sharing\LabelBuilder\UsernameLabelBuilder"
+                 public="false">
+            <tag name="klipper_security_extra.sharing_entry_label_builder" priority="-500" />
+        </service>
+    </services>
+
+</container>

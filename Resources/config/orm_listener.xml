@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="klipper_security_extra.orm.subscriber.organizational" class="Klipper\Component\SecurityExtra\Doctrine\Listener\OrganizationalSubscriber">
+            <tag name="doctrine.event_subscriber" priority="100" />
+            <argument type="service" id="klipper_security.organizational_context" />
+            <argument type="service" id="translator" />
+        </service>
+
+        <service id="klipper_security_extra.orm.subscriber.user" class="Klipper\Component\SecurityExtra\Doctrine\Listener\UserSubscriber">
+            <tag name="doctrine.event_subscriber" />
+            <argument type="service" id="translator" />
+            <property name="container" type="service" id="service_container" />
+        </service>
+
+        <service id="klipper_security_extra.orm.subscriber.role" class="Klipper\Component\SecurityExtra\Doctrine\Listener\RoleSubscriber">
+            <tag name="doctrine.event_subscriber" />
+            <argument type="service" id="translator" />
+            <property name="container" type="service" id="service_container" />
+        </service>
+
+        <service id="klipper_security_extra.orm.subscriber.roleable" class="Klipper\Component\SecurityExtra\Doctrine\Listener\RoleableSubscriber">
+            <tag name="doctrine.event_subscriber" />
+        </service>
+
+        <service id="klipper_security_extra.orm.subscriber.group" class="Klipper\Component\SecurityExtra\Doctrine\Listener\GroupSubscriber">
+            <tag name="doctrine.event_subscriber" />
+            <argument type="service" id="translator" />
+            <property name="container" type="service" id="service_container" />
+        </service>
+
+        <service id="klipper_security_extra.orm.subscriber.organization" class="Klipper\Component\SecurityExtra\Doctrine\Listener\OrganizationSubscriber">
+            <tag name="doctrine.event_subscriber" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="translator" />
+            <property name="container" type="service" id="service_container" />
+        </service>
+
+        <service id="klipper_security_extra.orm.subscriber.security" class="Klipper\Component\SecurityExtra\Doctrine\Listener\SecuritySubscriber">
+            <property name="container" type="service" id="service_container" />
+            <tag name="doctrine.event_subscriber" />
+        </service>
+
+        <service id="klipper_security_extra.orm.subscriber.organization_user" class="Klipper\Component\SecurityExtra\Doctrine\Listener\OrganizationUserSubscriber">
+            <tag name="doctrine.event_subscriber" />
+            <argument type="service" id="translator" />
+            <property name="container" type="service" id="service_container" />
+        </service>
+    </services>
+</container>

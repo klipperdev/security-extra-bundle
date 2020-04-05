@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <!-- CSRF Switcher -->
+        <service id="form.type_extension.klipper_security_extra.disable_csrf"
+                 class="Klipper\Component\SecurityExtra\Form\Extension\CsrfSwitcherTypeExtension"
+                 public="true">
+            <tag name="form.type_extension" priority="-25" />
+        </service>
+
+        <service id="klipper_security_extra.form_csrf_switcher.authentication.provider"
+                 class="Klipper\Component\SecurityExtra\Authentication\Provider\FormCsrfSwitcherProvider">
+        </service>
+
+        <service id="klipper_security_extra.form_csrf_switcher.authentication.listener"
+                 class="Klipper\Component\SecurityExtra\Http\Firewall\FormCsrfSwitcherListener">
+            <argument type="service" id="form.type_extension.klipper_security_extra.disable_csrf" />
+            <argument type="collection"/>
+        </service>
+
+        <!-- Permission Checker -->
+        <service id="form.type_extension.klipper_security_extra.permission_checker"
+                 class="Klipper\Component\SecurityExtra\Form\Extension\PermissionCheckerTypeExtension"
+                 public="true">
+            <tag name="form.type_extension" priority="25" />
+            <argument type="service" id="security.authorization_checker"/>
+        </service>
+
+        <service id="klipper_security_extra.permission_checker.authentication.provider"
+                 class="Klipper\Component\SecurityExtra\Authentication\Provider\FormPermissionCheckerProvider">
+        </service>
+
+        <service id="klipper_security_extra.permission_checker.authentication.listener"
+                 class="Klipper\Component\SecurityExtra\Http\Firewall\FormPermissionCheckerListener">
+            <argument type="service" id="form.type_extension.klipper_security_extra.permission_checker" />
+            <argument type="collection"/>
+        </service>
+    </services>
+</container>

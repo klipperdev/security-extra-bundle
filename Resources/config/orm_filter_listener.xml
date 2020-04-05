@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <!-- Userable Filter -->
+        <service id="klipper_security_extra.orm.filter.subscriber.userable" class="Klipper\Component\SecurityExtra\Doctrine\Filter\Listener\UserableFilterSubscriber">
+            <tag name="kernel.event_subscriber" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="security.token_storage"/>
+        </service>
+
+        <!-- Role Filter -->
+        <service id="klipper_security_extra.orm.filter.subscriber.role" class="Klipper\Component\SecurityExtra\Doctrine\Filter\Listener\RoleFilterSubscriber">
+            <tag name="kernel.event_subscriber" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="request_stack"/>
+            <argument>%klipper_security_extra.doctrine.filter.role.excluded_roles%</argument>
+        </service>
+
+        <!-- Organizational Filter -->
+        <service id="klipper_security_extra.orm.filter.subscriber.organizational" class="Klipper\Component\SecurityExtra\Doctrine\Filter\Listener\OrganizationalFilterSubscriber">
+            <tag name="kernel.event_subscriber" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="klipper_security.organizational_context"/>
+            <argument type="service" id="klipper_security_extra.organizational_filter_factory"/>
+        </service>
+
+        <!-- Organizational Filter Factory -->
+        <service id="klipper_security_extra.organizational_filter_factory"
+                 class="Klipper\Component\SecurityExtra\Organizational\OrganizationalFilterFactory"
+                 public="false">
+            <argument type="service" id="klipper_security_extra.organizational_filter.excluded_classes_loader" />
+            <argument type="service" id="klipper_security_extra.organizational_filter.user_excluded_orgs_classes_loader" />
+            <argument type="service" id="klipper_security_extra.organizational_filter.optional_all_filter_classes_loader" />
+            <argument type="service" id="klipper_security_extra.organizational_filter.array_resource" />
+        </service>
+
+        <service id="klipper_security_extra.organizational_filter.array_resource"
+                 class="Klipper\Component\Config\ArrayResource"
+                 public="false">
+            <argument type="collection" />
+            <call method="add">
+                <argument>.</argument>
+                <argument>config</argument>
+            </call>
+        </service>
+
+        <service id="Klipper\Component\SecurityExtra\Organizational\OrganizationalFilterFactory" alias="klipper_security_extra.organizational_filter_factory" />
+        <service id="Klipper\Component\SecurityExtra\Organizational\OrganizationalFilterFactoryInterface" alias="klipper_security_extra.organizational_filter_factory" />
+
+        <!-- Organizational Filter Factory Cache -->
+        <service id="klipper_security_extra.organizational_filter_factory.cache"
+                 class="Klipper\Component\SecurityExtra\Organizational\CacheOrganizationalFilterFactory"
+                 decorates="klipper_security_extra.organizational_filter_factory"
+                 public="false">
+            <argument type="service" id="klipper_security_extra.organizational_filter_factory.cache.inner" />
+            <argument type="collection">
+                <argument key="cache_dir">%kernel.cache_dir%/klipper_security</argument>
+            </argument>
+            <call method="setConfigCacheFactory">
+                <argument type="service" id="config_cache_factory" />
+            </call>
+        </service>
+
+        <service id="klipper_security_extra.organizational_filter_factory.warmer"
+                 class="Klipper\Component\SecurityExtra\Organizational\OrganizationalFilterFactoryCacheWarmer"
+                 public="false">
+            <tag name="container.service_subscriber" />
+            <tag name="kernel.cache_warmer" />
+            <argument type="service" id="Psr\Container\ContainerInterface" />
+        </service>
+
+        <!-- Organizational Filter Excluded Classes Loader -->
+        <service id="klipper_security_extra.organizational_filter.excluded_classes_resolver"
+                 class="Symfony\Component\Config\Loader\LoaderResolver"
+                 public="false">
+            <argument type="collection" />
+        </service>
+
+        <service id="klipper_security_extra.organizational_filter.excluded_classes_loader"
+                 class="Symfony\Component\Config\Loader\DelegatingLoader"
+                 public="false">
+            <argument type="service" id="klipper_security_extra.organizational_filter.excluded_classes_resolver" />
+        </service>
+
+        <service id="klipper_security_extra.organizational_filter.excluded_classes_loader.array_resource"
+                 class="Klipper\Component\SecurityExtra\Organizational\Loader\ExcludedClassesArrayResourceLoader"
+                 public="false">
+            <tag name="klipper_security_extra.organizational_filter.excluded_classes_loader" priority="200" />
+        </service>
+
+        <service id="klipper_security_extra.organizational_filter.excluded_classes_loader.configuration"
+                 class="Klipper\Component\SecurityExtra\Organizational\Loader\ExcludedClassesConfigurationLoader"
+                 public="false">
+            <tag name="klipper_security_extra.organizational_filter.excluded_classes_loader" priority="100" />
+            <argument type="collection"/>
+        </service>
+
+        <!-- Organizational Filter User Excluded Orgs Classes Loader -->
+        <service id="klipper_security_extra.organizational_filter.user_excluded_orgs_classes_resolver"
+                 class="Symfony\Component\Config\Loader\LoaderResolver"
+                 public="false">
+            <argument type="collection" />
+        </service>
+
+        <service id="klipper_security_extra.organizational_filter.user_excluded_orgs_classes_loader"
+                 class="Symfony\Component\Config\Loader\DelegatingLoader"
+                 public="false">
+            <argument type="service" id="klipper_security_extra.organizational_filter.user_excluded_orgs_classes_resolver" />
+        </service>
+
+        <service id="klipper_security_extra.organizational_filter.user_excluded_orgs_classes_loader.array_resource"
+                 class="Klipper\Component\SecurityExtra\Organizational\Loader\UserExcludedOrgsClassesArrayResourceLoader"
+                 public="false">
+            <tag name="klipper_security_extra.organizational_filter.user_excluded_orgs_classes_loader" priority="200" />
+        </service>
+
+        <service id="klipper_security_extra.organizational_filter.user_excluded_orgs_classes_loader.configuration"
+                 class="Klipper\Component\SecurityExtra\Organizational\Loader\UserExcludedOrgsClassesConfigurationLoader"
+                 public="false">
+            <tag name="klipper_security_extra.organizational_filter.user_excluded_orgs_classes_loader" priority="100" />
+            <argument type="collection"/>
+        </service>
+
+        <!-- Organizational Filter Optional All Filter Classes Loader -->
+        <service id="klipper_security_extra.organizational_filter.optional_all_filter_classes_resolver"
+                 class="Symfony\Component\Config\Loader\LoaderResolver"
+                 public="false">
+            <argument type="collection" />
+        </service>
+
+        <service id="klipper_security_extra.organizational_filter.optional_all_filter_classes_loader"
+                 class="Symfony\Component\Config\Loader\DelegatingLoader"
+                 public="false">
+            <argument type="service" id="klipper_security_extra.organizational_filter.optional_all_filter_classes_resolver" />
+        </service>
+
+        <service id="klipper_security_extra.organizational_filter.optional_all_filter_classes_loader.array_resource"
+                 class="Klipper\Component\SecurityExtra\Organizational\Loader\OptionalAllFilterClassesArrayResourceLoader"
+                 public="false">
+            <tag name="klipper_security_extra.organizational_filter.optional_all_filter_classes_loader" priority="200" />
+        </service>
+
+        <service id="klipper_security_extra.organizational_filter.optional_all_filter_classes_loader.configuration"
+                 class="Klipper\Component\SecurityExtra\Organizational\Loader\OptionalAllFilterClassesConfigurationLoader"
+                 public="false">
+            <tag name="klipper_security_extra.organizational_filter.optional_all_filter_classes_loader" priority="100" />
+            <argument type="collection"/>
+        </service>
+
+        <!-- Organization Filter -->
+        <service id="klipper_security_extra.orm.filter.subscriber.organization" class="Klipper\Component\SecurityExtra\Doctrine\Filter\Listener\OrganizationFilterSubscriber">
+            <tag name="kernel.event_subscriber" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="security.token_storage"/>
+        </service>
+
+        <!-- Organization User Filter -->
+        <service id="klipper_security_extra.orm.filter.subscriber.organization_user" class="Klipper\Component\SecurityExtra\Doctrine\Filter\Listener\OrganizationUserFilterSubscriber">
+            <tag name="kernel.event_subscriber" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="security.token_storage"/>
+            <argument type="service" id="klipper_security.organizational_context"/>
+        </service>
+    </services>
+</container>
