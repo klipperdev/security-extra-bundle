@@ -12,6 +12,7 @@
 namespace Klipper\Bundle\SecurityExtraBundle;
 
 use Klipper\Bundle\SecurityExtraBundle\DependencyInjection\Compiler\FakeHostPass;
+use Klipper\Bundle\SecurityExtraBundle\DependencyInjection\Compiler\KlipperSecurityExtraExtensionDelayPass;
 use Klipper\Bundle\SecurityExtraBundle\DependencyInjection\Compiler\OrganizationalFilterExcludedClassesLoaderPass;
 use Klipper\Bundle\SecurityExtraBundle\DependencyInjection\Compiler\OrganizationalFilterOptionalAllFilterClassesLoaderPass;
 use Klipper\Bundle\SecurityExtraBundle\DependencyInjection\Compiler\OrganizationalFilterUserExcludedOrgsClassesLoaderPass;
@@ -35,6 +36,7 @@ class KlipperSecurityExtraBundle extends Bundle
      */
     public function build(ContainerBuilder $container): void
     {
+        $container->addCompilerPass(new KlipperSecurityExtraExtensionDelayPass());
         $container->addCompilerPass(new SharingEntryLoaderPass());
         $container->addCompilerPass(new OrganizationalFilterExcludedClassesLoaderPass());
         $container->addCompilerPass(new OrganizationalFilterUserExcludedOrgsClassesLoaderPass());

@@ -7,7 +7,7 @@
     <services>
         <service id="form.type.klipper_security_extra.sharing" class="Klipper\Component\SecurityExtra\Form\Type\SharingIdentityTypeType" public="true">
             <tag name="form.type" />
-            <argument type="service" id="klipper_security.organizational_context" />
+            <argument type="service" id="klipper_security.organizational_context" on-invalid="null" />
         </service>
     </services>
 </container>

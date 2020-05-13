@@ -18,7 +18,7 @@
             <argument type="service" id="security.authorization_checker"/>
             <argument type="service" id="security.token_storage"/>
             <argument type="service" id="doctrine"/>
-            <argument type="service" id="klipper_security.organizational_context"/>
+            <argument type="service" id="klipper_security.organizational_context" on-invalid="null"/>
         </service>
 
         <service id="klipper_security_extra.validator.reserved_name"

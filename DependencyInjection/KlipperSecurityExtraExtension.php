@@ -11,21 +11,16 @@
 
 namespace Klipper\Bundle\SecurityExtraBundle\DependencyInjection;
 
-use Doctrine\Common\Annotations\Reader;
 use Geocoder\Geocoder;
 use JMS\SerializerBundle\JMSSerializerBundle;
-use Klipper\Bundle\MetadataBundle\KlipperMetadataBundle;
 use Klipper\Bundle\SecurityExtraBundle\Listener\SecurityFakeHostSubscriber;
 use Klipper\Component\HttpFoundation\Util\RequestUtil;
-use Klipper\Component\SecurityExtra\Sharing\Loader\AnnotationLoader;
-use Klipper\Component\SecurityExtra\Sharing\SharingEntryConfig;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -49,13 +44,10 @@ class KlipperSecurityExtraExtension extends Extension
 
         $loader->load('authentication.xml');
         $loader->load('batch.xml');
-        $loader->load('security_sharing.xml');
-        $loader->load('orm_validation.xml');
         $loader->load('orm_listener.xml');
         $loader->load('orm_filter_listener.xml');
+
         $loader->load('security_permission_listener.xml');
-        $loader->load('organizational_context.xml');
-        $loader->load('organizational_context_listener.xml');
         $loader->load('resource_domain_listener.xml');
         $loader->load('validator.xml');
         $loader->load('form.xml');
@@ -64,10 +56,6 @@ class KlipperSecurityExtraExtension extends Extension
 
         if (class_exists(JMSSerializerBundle::class)) {
             $loader->load('serializer.xml');
-
-            if (class_exists(KlipperMetadataBundle::class)) {
-                $loader->load('serializer_metadata.xml');
-            }
         }
 
         $this->configRoleFilter($container, $config['role_filter']);
@@ -77,7 +65,7 @@ class KlipperSecurityExtraExtension extends Extension
         $this->configureFakeHost($container, $config['fake_host']);
         $this->configValidator($container, $config['validator']);
         $this->configLogonAudit($container, $loader, $config['logon_audit']);
-        $this->configAnnotations($container, $loader, $config['annotations']);
+        $this->configAnnotations($container, $config['annotations']);
     }
 
     /**
@@ -99,17 +87,7 @@ class KlipperSecurityExtraExtension extends Extension
      */
     protected function configOrganizationalContext(ContainerBuilder $container, array $config): void
     {
-        $container->getDefinition('klipper_security_extra.organizational_filter.excluded_classes_loader.configuration')
-            ->replaceArgument(0, $config['excluded_classes'])
-        ;
-
-        $container->getDefinition('klipper_security_extra.organizational_filter.user_excluded_orgs_classes_loader.configuration')
-            ->replaceArgument(0, $config['user_excluded_orgs_classes'])
-        ;
-
-        $container->getDefinition('klipper_security_extra.organizational_filter.optional_all_filter_classes_loader.configuration')
-            ->replaceArgument(0, $config['optional_all_filter_classes'])
-        ;
+        $container->setParameter('klipper_security_extra.config.organizational_filter', $config);
     }
 
     /**
@@ -120,23 +98,7 @@ class KlipperSecurityExtraExtension extends Extension
      */
     protected function configSharingEntryManager(ContainerBuilder $container, array $config): void
     {
-        $def = $container->getDefinition('klipper_security_extra.sharing_entry_loader.configuration');
-        $configs = $def->getArgument(0);
-
-        foreach ($config as $class => $entryConfig) {
-            $cDef = new Definition(SharingEntryConfig::class, [
-                $class,
-                $entryConfig['field'],
-                $entryConfig['repository_method'],
-            ]);
-            $cDef->setPublic(false);
-
-            $id = uniqid('klipper_security_extra.sharing_entry_config_', true);
-            $container->setDefinition($id, $cDef);
-            $configs[] = new Reference($id);
-        }
-
-        $def->replaceArgument(0, $configs);
+        $container->setParameter('klipper_security_extra.config.sharing_entry_manager', $config);
     }
 
     /**
@@ -211,48 +173,12 @@ class KlipperSecurityExtraExtension extends Extension
      * Configure the annotations.
      *
      * @param ContainerBuilder $container The container builder
-     * @param LoaderInterface  $loader    The config loader
      * @param array            $config    The config
      *
      * @throws
      */
-    protected function configAnnotations(ContainerBuilder $container, LoaderInterface $loader, array $config): void
+    protected function configAnnotations(ContainerBuilder $container, array $config): void
     {
-        if (interface_exists(Reader::class) && class_exists(Finder::class)) {
-            if ($config['sharing_entry']) {
-                $loader->load('annotation_sharing.xml');
-                $this->addIncludePaths(
-                    $container->getDefinition('klipper_security_extra.sharing_entry.array_resource'),
-                    $config['include_paths']
-                );
-
-                $this->addAnnotatedClassesToCompile([
-                    AnnotationLoader::class,
-                ]);
-            }
-
-            if ($config['organizational_filters']) {
-                $loader->load('annotation_organizational_filter.xml');
-                $this->addIncludePaths(
-                    $container->getDefinition('klipper_security_extra.organizational_filter.array_resource'),
-                    $config['include_paths']
-                );
-
-                $this->addAnnotatedClassesToCompile([
-                    AnnotationLoader::class,
-                ]);
-            }
-        }
-    }
-
-    /**
-     * @param Definition $def   The service definition
-     * @param string[]   $paths The paths
-     */
-    private function addIncludePaths(Definition $def, array $paths): void
-    {
-        foreach ($paths as $path) {
-            $def->addMethodCall('add', [$path, 'annotation']);
-        }
+        $container->setParameter('klipper_security_extra.config.annotations', $config);
     }
 }

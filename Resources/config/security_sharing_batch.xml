@@ -6,12 +6,13 @@
 
     <services>
 
-        <service id="klipper_security_extra.batch.role_rename" class="Klipper\Component\SecurityExtra\Batch\RoleRename" public="true">
+        <service id="klipper_security_extra.batch.sharing_identity_rename" class="Klipper\Component\SecurityExtra\Batch\SharingIdentityRename" public="true">
             <argument type="service" id="klipper_resource.domain_manager" />
             <argument type="service" id="klipper_security.permission_manager" />
+            <argument type="service" id="klipper_security.sharing_manager" />
         </service>
 
-        <service id="Klipper\Component\SecurityExtra\Batch\RoleRename" alias="klipper_security_extra.batch.role_rename" />
+        <service id="Klipper\Component\SecurityExtra\Batch\SharingIdentityRename" alias="klipper_security_extra.batch.sharing_identity_rename" />
 
     </services>
 </container>
