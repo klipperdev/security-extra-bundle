@@ -23,7 +23,7 @@
         "klipper/http-foundation": "^2.0.0"
     },
     "autoload": {
-        "psr-4": { "Klipper\\Bundle\\SecurityBundle\\": "" },
+        "psr-4": { "Klipper\\Bundle\\SecurityExtraBundle\\": "" },
         "exclude-from-classmap": [
             "**/Tests/"
         ]
