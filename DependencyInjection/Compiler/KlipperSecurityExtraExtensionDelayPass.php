@@ -60,7 +60,8 @@ class KlipperSecurityExtraExtensionDelayPass implements CompilerPassInterface
      */
     protected function configOrganizationalContext(ContainerBuilder $container, LoaderInterface $loader): void
     {
-        if (!$container->hasDefinition('klipper_security.organizational_context')) {
+        if (!$container->hasDefinition('klipper_security.organizational_context')
+                && !$container->hasAlias('klipper_security.organizational_context')) {
             return;
         }
 
