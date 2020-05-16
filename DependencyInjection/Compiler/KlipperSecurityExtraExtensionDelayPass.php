@@ -39,6 +39,7 @@ class KlipperSecurityExtraExtensionDelayPass implements CompilerPassInterface
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));
 
         $this->configOrganizationalContext($container, $loader);
+        $this->configSharing($container, $loader);
         $this->configSharingEntryManager($container, $loader);
         $this->configAnnotations($container, $loader);
 
