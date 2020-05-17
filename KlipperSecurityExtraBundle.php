@@ -36,7 +36,7 @@ class KlipperSecurityExtraBundle extends Bundle
      */
     public function build(ContainerBuilder $container): void
     {
-        $container->addCompilerPass(new KlipperSecurityExtraExtensionDelayPass());
+        $container->addCompilerPass(new KlipperSecurityExtraExtensionDelayPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 10);
         $container->addCompilerPass(new SharingEntryLoaderPass());
         $container->addCompilerPass(new OrganizationalFilterExcludedClassesLoaderPass());
         $container->addCompilerPass(new OrganizationalFilterUserExcludedOrgsClassesLoaderPass());
