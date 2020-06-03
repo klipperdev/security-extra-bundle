@@ -25,9 +25,6 @@ class SharingEntryLabelBuilderPass implements CompilerPassInterface
 {
     use PriorityTaggedServiceTrait;
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container): void
     {
         $serviceId = 'klipper_security_extra.sharing_entry_manager';

@@ -31,9 +31,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class KlipperSecurityExtraBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
     public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new KlipperSecurityExtraExtensionDelayPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 10);

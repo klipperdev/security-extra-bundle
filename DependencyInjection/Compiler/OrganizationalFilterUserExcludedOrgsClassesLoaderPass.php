@@ -21,9 +21,6 @@ use Klipper\Bundle\SecurityBundle\DependencyInjection\Compiler\AbstractLoaderPas
  */
 class OrganizationalFilterUserExcludedOrgsClassesLoaderPass extends AbstractLoaderPass
 {
-    /**
-     * Constructor.
-     */
     public function __construct()
     {
         parent::__construct(

@@ -40,7 +40,7 @@ class KlipperSecurityExtraExtensionDelayPass implements CompilerPassInterface
 
         $this->configOrganizationalContext($container, $loader);
         $this->configSharing($container, $loader);
-        $this->configSharingEntryManager($container, $loader);
+        $this->configSharingEntryManager($container);
         $this->configAnnotations($container, $loader);
 
         // Clean parameters
@@ -117,11 +117,10 @@ class KlipperSecurityExtraExtensionDelayPass implements CompilerPassInterface
      * Configure the security sharing entry manager.
      *
      * @param ContainerBuilder $container The container builder
-     * @param LoaderInterface  $loader    The config loader
      *
      * @throws
      */
-    protected function configSharingEntryManager(ContainerBuilder $container, LoaderInterface $loader): void
+    protected function configSharingEntryManager(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition('klipper_security.sharing_manager')) {
             return;

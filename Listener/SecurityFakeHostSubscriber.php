@@ -23,22 +23,13 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class SecurityFakeHostSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var FirewallMap
-     */
-    private $firewallMap;
+    private FirewallMap $firewallMap;
 
-    /**
-     * Constructor.
-     */
     public function __construct(FirewallMap $firewallMap)
     {
         $this->firewallMap = $firewallMap;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [
