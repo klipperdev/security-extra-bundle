@@ -8,13 +8,14 @@
         <service id="klipper_security_extra.orm.subscriber.user" class="Klipper\Component\SecurityExtra\Doctrine\Listener\UserSubscriber">
             <tag name="doctrine.event_subscriber" />
             <argument type="service" id="translator" />
-            <property name="container" type="service" id="service_container" />
+            <argument type="service" id="validator" />
+            <argument type="service" id="klipper_resource.object_factory" />
         </service>
 
         <service id="klipper_security_extra.orm.subscriber.role" class="Klipper\Component\SecurityExtra\Doctrine\Listener\RoleSubscriber">
             <tag name="doctrine.event_subscriber" />
             <argument type="service" id="translator" />
-            <property name="container" type="service" id="service_container" />
+            <argument type="service" id="klipper_security.permission_manager"/>
         </service>
 
         <service id="klipper_security_extra.orm.subscriber.roleable" class="Klipper\Component\SecurityExtra\Doctrine\Listener\RoleableSubscriber">
@@ -24,25 +25,27 @@
         <service id="klipper_security_extra.orm.subscriber.group" class="Klipper\Component\SecurityExtra\Doctrine\Listener\GroupSubscriber">
             <tag name="doctrine.event_subscriber" />
             <argument type="service" id="translator" />
-            <property name="container" type="service" id="service_container" />
+            <argument type="service" id="klipper_security.permission_manager"/>
         </service>
 
         <service id="klipper_security_extra.orm.subscriber.organization" class="Klipper\Component\SecurityExtra\Doctrine\Listener\OrganizationSubscriber">
             <tag name="doctrine.event_subscriber" />
             <argument type="service" id="security.token_storage" />
             <argument type="service" id="translator" />
-            <property name="container" type="service" id="service_container" />
+            <argument type="service" id="validator" />
+            <argument type="service" id="klipper_resource.object_factory" />
         </service>
 
         <service id="klipper_security_extra.orm.subscriber.security" class="Klipper\Component\SecurityExtra\Doctrine\Listener\SecuritySubscriber">
-            <property name="container" type="service" id="service_container" />
             <tag name="doctrine.event_subscriber" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="translator" />
         </service>
 
         <service id="klipper_security_extra.orm.subscriber.organization_user" class="Klipper\Component\SecurityExtra\Doctrine\Listener\OrganizationUserSubscriber">
             <tag name="doctrine.event_subscriber" />
             <argument type="service" id="translator" />
-            <property name="container" type="service" id="service_container" />
+            <argument type="service" id="klipper_security.permission_manager" />
         </service>
     </services>
 </container>
