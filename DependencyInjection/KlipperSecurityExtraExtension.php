@@ -51,6 +51,7 @@ class KlipperSecurityExtraExtension extends Extension
         $loader->load('form.xml');
         $loader->load('form_firewall.xml');
         $loader->load('command.xml');
+        $loader->load('messenger.xml');
 
         if (class_exists(JMSSerializerBundle::class)) {
             $loader->load('serializer.xml');
