@@ -10,5 +10,11 @@
             <tag name="messenger.message_handler" />
             <argument type="service" id="klipper_security_extra.batch.role_rename"/>
         </service>
+
+        <service id="klipper_security_extra.messenger.handler.sharing_identity_rename"
+                 class="Klipper\Component\SecurityExtra\MessageHandler\SharingIdentityRenameHandler">
+            <tag name="messenger.message_handler" />
+            <argument type="service" id="klipper_security_extra.batch.sharing_identity_rename"/>
+        </service>
     </services>
 </container>

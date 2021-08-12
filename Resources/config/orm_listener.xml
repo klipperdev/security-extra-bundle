@@ -52,5 +52,11 @@
             <tag name="doctrine.event_subscriber" />
             <argument type="service" id="messenger.bus.default" />
         </service>
+
+        <service id="klipper_security_extra.orm.subscriber.sharing_identity_rename" class="Klipper\Component\SecurityExtra\Doctrine\Listener\SharingIdentityRenameSubscriber">
+            <tag name="doctrine.event_subscriber" />
+            <argument type="service" id="klipper_security.sharing_manager" />
+            <argument type="service" id="messenger.bus.default" />
+        </service>
     </services>
 </container>
