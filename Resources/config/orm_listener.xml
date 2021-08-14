@@ -10,6 +10,7 @@
             <argument type="service" id="translator" />
             <argument type="service" id="validator" />
             <argument type="service" id="klipper_resource.object_factory" />
+            <argument type="collection"/>
         </service>
 
         <service id="klipper_security_extra.orm.subscriber.role" class="Klipper\Component\SecurityExtra\Doctrine\Listener\RoleSubscriber">

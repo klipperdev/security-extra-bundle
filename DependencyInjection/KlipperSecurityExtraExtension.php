@@ -57,6 +57,7 @@ class KlipperSecurityExtraExtension extends Extension
             $loader->load('serializer.xml');
         }
 
+        $this->configUserOrganization($container, $config['user_organization']);
         $this->configRoleFilter($container, $config['role_filter']);
         $this->configOrganizationalContext($container, $config['organizational_filter']);
         $this->configSharingEntryManager($container, $config['sharing_entries']);
@@ -65,6 +66,18 @@ class KlipperSecurityExtraExtension extends Extension
         $this->configValidator($container, $config['validator']);
         $this->configLogonAudit($container, $loader, $config['logon_audit']);
         $this->configAnnotations($container, $config['annotations']);
+    }
+
+    /**
+     * Configure the organization of user.
+     *
+     * @param ContainerBuilder $container The container builder
+     * @param array            $config    The config
+     */
+    protected function configUserOrganization(ContainerBuilder $container, array $config): void
+    {
+        $def = $container->getDefinition('klipper_security_extra.orm.subscriber.user');
+        $def->replaceArgument(3, $config['default_roles']);
     }
 
     /**
