@@ -15,6 +15,7 @@ use Geocoder\Geocoder;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use Klipper\Bundle\SecurityExtraBundle\Listener\SecurityFakeHostSubscriber;
 use Klipper\Component\HttpFoundation\Util\RequestUtil;
+use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -66,6 +67,7 @@ class KlipperSecurityExtraExtension extends Extension
         $this->configValidator($container, $config['validator']);
         $this->configLogonAudit($container, $loader, $config['logon_audit']);
         $this->configAnnotations($container, $config['annotations']);
+        $this->configTwig($loader);
     }
 
     /**
@@ -192,5 +194,15 @@ class KlipperSecurityExtraExtension extends Extension
     protected function configAnnotations(ContainerBuilder $container, array $config): void
     {
         $container->setParameter('klipper_security_extra.config.annotations', $config);
+    }
+
+    /**
+     * @throws
+     */
+    protected function configTwig(LoaderInterface $loader): void
+    {
+        if (class_exists(TwigBundle::class)) {
+            $loader->load('organizational_twig.xml');
+        }
     }
 }
