@@ -10,6 +10,7 @@
                  class="Klipper\Component\SecurityExtra\Twig\Extension\OrganizationalContextExtension"
         >
             <tag name="twig.extension"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="klipper_security.organizational_context" on-invalid="null"/>
         </service>
     </services>
