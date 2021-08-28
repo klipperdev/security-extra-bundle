@@ -60,7 +60,7 @@ class KlipperSecurityExtraExtensionDelayPass implements CompilerPassInterface
      */
     protected function configOrganizationalContext(ContainerBuilder $container, LoaderInterface $loader): void
     {
-        if (!$container->hasDefinition('klipper_security.organizational_context')) {
+        if (!$container->has('klipper_security.organizational_context')) {
             return;
         }
 
@@ -161,7 +161,7 @@ class KlipperSecurityExtraExtensionDelayPass implements CompilerPassInterface
 
         if (interface_exists(Reader::class) && class_exists(Finder::class)) {
             if ($config['organizational_filters']
-                    && $container->hasDefinition('klipper_security.organizational_context')) {
+                    && $container->has('klipper_security.organizational_context')) {
                 $loader->load('organizational_annotation_filter.xml');
                 $this->addIncludePaths(
                     $container->getDefinition('klipper_security_extra.organizational_filter.array_resource'),
