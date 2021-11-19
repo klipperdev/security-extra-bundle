@@ -8,7 +8,6 @@
         <service id="klipper_security_extra.subscriber.permission" class="Klipper\Component\SecurityExtra\Listener\PermissionSubscriber">
             <tag name="kernel.event_subscriber" />
             <argument type="service" id="request_stack"/>
-            <argument type="service" id="security.token_storage"/>
         </service>
 
         <service id="klipper_security_extra.subscriber.permission_doctrine_filter" class="Klipper\Component\SecurityExtra\Listener\PermissionDoctrineFilterSubscriber">
