@@ -139,6 +139,6 @@ class Configuration implements ConfigurationInterface
             ->booleanNode('sharing_entry')->defaultTrue()->end()
             ->booleanNode('organizational_filters')->defaultTrue()->end()
             ->end()
-            ;
+        ;
     }
 }
