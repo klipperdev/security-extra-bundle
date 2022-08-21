@@ -14,12 +14,9 @@
 
         <service id="Klipper\Component\SecurityExtra\Helper\OrganizationalContextHelper" alias="klipper_security_extra.organizational_context.helper" />
 
-        <service id="klipper_security_extra.organizational_context.authentication.provider"
-                 class="Klipper\Component\SecurityExtra\Authentication\Provider\OrganizationalContextProvider">
-        </service>
-
-        <service id="klipper_security_extra.organizational_context.authentication.listener"
-                 class="Klipper\Component\SecurityExtra\Http\Firewall\OrganizationalContextListener">
+        <service id="klipper_security_extra.authenticator.organizational_context.firewall_listener"
+                 class="Klipper\Component\SecurityExtra\Firewall\OrganizationalContextFirewallListener"
+                 abstract="true">
             <argument type="service" id="klipper_security_extra.organizational_context.helper" />
             <argument type="collection"/>
         </service>

@@ -12,12 +12,9 @@
             <tag name="form.type_extension" priority="-25" />
         </service>
 
-        <service id="klipper_security_extra.form_csrf_switcher.authentication.provider"
-                 class="Klipper\Component\SecurityExtra\Authentication\Provider\FormCsrfSwitcherProvider">
-        </service>
-
-        <service id="klipper_security_extra.form_csrf_switcher.authentication.listener"
-                 class="Klipper\Component\SecurityExtra\Http\Firewall\FormCsrfSwitcherListener">
+        <service id="klipper_security_extra.authenticator.form_csrf_switcher.firewall_listener"
+                 class="Klipper\Component\SecurityExtra\Firewall\FormCsrfSwitcherFirewallListener"
+                 abstract="true">
             <argument type="service" id="form.type_extension.klipper_security_extra.disable_csrf" />
             <argument type="collection"/>
         </service>
@@ -30,12 +27,9 @@
             <argument type="service" id="security.authorization_checker"/>
         </service>
 
-        <service id="klipper_security_extra.permission_checker.authentication.provider"
-                 class="Klipper\Component\SecurityExtra\Authentication\Provider\FormPermissionCheckerProvider">
-        </service>
-
-        <service id="klipper_security_extra.permission_checker.authentication.listener"
-                 class="Klipper\Component\SecurityExtra\Http\Firewall\FormPermissionCheckerListener">
+        <service id="klipper_security_extra.authenticator.permission_checker.firewall_listener"
+                 class="Klipper\Component\SecurityExtra\Firewall\FormPermissionCheckerFirewallListener"
+                 abstract="true">
             <argument type="service" id="form.type_extension.klipper_security_extra.permission_checker" />
             <argument type="collection"/>
         </service>

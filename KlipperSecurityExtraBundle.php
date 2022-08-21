@@ -18,9 +18,9 @@ use Klipper\Bundle\SecurityExtraBundle\DependencyInjection\Compiler\Organization
 use Klipper\Bundle\SecurityExtraBundle\DependencyInjection\Compiler\OrganizationalFilterUserExcludedOrgsClassesLoaderPass;
 use Klipper\Bundle\SecurityExtraBundle\DependencyInjection\Compiler\SharingEntryLabelBuilderPass;
 use Klipper\Bundle\SecurityExtraBundle\DependencyInjection\Compiler\SharingEntryLoaderPass;
-use Klipper\Component\SecurityExtra\Factory\FormCsrfSwitcherFactory;
-use Klipper\Component\SecurityExtra\Factory\FormPermissionCheckerFactory;
-use Klipper\Component\SecurityExtra\Factory\OrganizationalContextFactory;
+use Klipper\Bundle\SecurityExtraBundle\Factory\FormCsrfSwitcherFactory;
+use Klipper\Bundle\SecurityExtraBundle\Factory\FormPermissionCheckerFactory;
+use Klipper\Bundle\SecurityExtraBundle\Factory\OrganizationalContextFactory;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -43,8 +43,8 @@ class KlipperSecurityExtraBundle extends Bundle
 
         /** @var SecurityExtension $extension */
         $extension = $container->getExtension('security');
-        $extension->addSecurityListenerFactory(new OrganizationalContextFactory());
-        $extension->addSecurityListenerFactory(new FormCsrfSwitcherFactory());
-        $extension->addSecurityListenerFactory(new FormPermissionCheckerFactory());
+        $extension->addAuthenticatorFactory(new OrganizationalContextFactory());
+        $extension->addAuthenticatorFactory(new FormCsrfSwitcherFactory());
+        $extension->addAuthenticatorFactory(new FormPermissionCheckerFactory());
     }
 }
